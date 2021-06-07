@@ -24,8 +24,8 @@ module doorbell(
     //Todo: define inputs here
     input a,
     input b,
-    input [2:0] sel,
-    output out
+    input [2:0] sel,   //input a,b,sel
+    output out         //output out
     );
     
     
@@ -33,6 +33,6 @@ module doorbell(
     wire   out;
 
     //Todo: define your logic here                 
-      assign #10 out=(sel==0)?a:
+      assign #5 out=(sel==0)?a:
                      b;   //out=b when sel=1
 endmodule
