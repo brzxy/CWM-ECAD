@@ -37,6 +37,6 @@ module blinds(
                (a==0&&b==1)?func[1]:  //ditto
                (a==1&&b==0)?func[2]:
                (a==1&&b==1)?func[3]:
-               func[0];               //cannot reach here as all cases have been discussed
+               func[3];               //cannot reach here as all cases have been discussed
 
 endmodule
