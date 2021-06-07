@@ -33,10 +33,10 @@ module blinds(
     wire   out;
          
       //Todo: add you logic here
-    assign out=(a==0&&b==0)?func[0]:
-               (a==0&&b==1)?func[1]:
+    assign out=(a==0&&b==0)?func[0]:  //out=func[0] if a&b=0, else move on to next statement
+               (a==0&&b==1)?func[1]:  //ditto
                (a==1&&b==0)?func[2]:
                (a==1&&b==1)?func[3]:
-               func[0];
+               func[0];               //cannot reach here as all cases have been discussed
 
 endmodule
