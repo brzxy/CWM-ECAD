@@ -45,7 +45,7 @@ reg [2:0] colour_out;
    initial 
    begin //This block drives inputs to user’s module and checks output
         err=0;         
-        rst=1;
+        rst=0;
 
         button=0;
 
@@ -62,7 +62,7 @@ reg [2:0] colour_out;
             err = 1;
         end
         
-        if ((button==0)&&(colour_out>colour_prev))
+        if ((button==0)&&(colour_out!=colour_prev))
         //button=0 means the colour number will stay constant 
         begin
            $display("Test FAILED");//if not then test failed
@@ -86,6 +86,7 @@ reg [2:0] colour_out;
 
         colour_out=colour_prev; //set the new colour_prev  
         button=button+1; 
+        rst=rst+1;
      end   
    end  
   
