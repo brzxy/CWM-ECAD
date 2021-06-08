@@ -39,6 +39,10 @@ wire [7:0] counter_out;
    begin //This block drives inputs to user’s module and checks output
         err=0;         
         rst=1;
+
+        change=0;
+        on_off=0;
+
         counter_prev=counter_out;        
 
      forever begin
@@ -74,7 +78,9 @@ wire [7:0] counter_out;
            err = 1;
         end
 
-        counter_prev=counter_out; //set the new counter_prev   
+        counter_prev=counter_out; //set the new counter_prev
+        on_off=on_off+1;
+        change=1;  
      end   
    end  
   
