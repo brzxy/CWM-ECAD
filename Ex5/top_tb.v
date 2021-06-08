@@ -17,8 +17,8 @@ parameter CLK_PERIOD = 10; //set the clock period
 reg clk;
 reg [4:0] temperature;
 reg err;
-reg cooling;
-reg heating;
+wire cooling;
+wire heating;
 
 //Todo: Clock generation
 
