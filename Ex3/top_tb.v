@@ -16,34 +16,86 @@ module top_tb(
 //Todo: Parameters
 parameter CLK_PERIOD = 10; //set the clock period
 //Todo: Regitsers and wires
-reg clk, rst, data, data_out;
-
+reg clk;
+reg rst; 
+reg on_off;
+reg change;
+reg err;
+reg [7:0] counter_prev;
+wire [7:0] counter_out;
 
 //Todo: Clock generation
 
-   initial begin //This block generates the clock with a period of 10 time units
+   initial
+   begin //This block generates the clock with a period of 10 time units
       clk=0;
       forever
-      #(CLK_PERIOD/2) clk=~clk; //happens every delay of CLK_PERIOD/2
-   end
+        #(CLK_PERIOD/2) clk=~clk; //happens every delay of CLK_PERIOD/2
+      end
 
 //Todo: User logic
 
-   initial begin //This block drives inputs to user’s module and checks output
-      rst=1;
-      data=0;
-      #10 rst=0;
-      data=1;
-      #10
-      $display(“data= %h, data_out=%h”, data, data_out);
-   end    
+   initial 
+   begin //This block drives inputs to user’s module and checks output
+        err=0;         
+        rst=1;
+        counter_prev=counter_out;        
+
+     forever begin
+        
+        //check for on_off
+        #CLK_PERIOD
+        if ((on_off==1)&&(counter_out<counter_prev))
+        //on_off=1 means counter counts up, so counter_out should be larger than counter_prev 
+        begin
+           $display("TEST FAILED");//if not then test failed
+            err = 1;
+        end
+        
+        if ((on_off==0)&&(counter_out>counter_prev))
+        //on_off=1 means counter counts up, so counter_out should be smaller than counter_prev 
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end
+
+
+        //check for reset
+        if ((rst==1)&&(counter_out!=0))
+        //rst=1 means counter_out=0
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end
+        if ((rst==0)&&(counter_out!=counter_prev))
+        //rst=0 means counter_out=counter_prev
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end
+
+        counter_prev=counter_out; //set the new counter_prev   
+     end   
+   end  
+  
 //Todo: Finish test, check for success
 
+     initial
+     begin
+        #50
+        if (err==0)
+          $display("TEST PASSED!");
+        $finish;
+     end
+
 //Todo: Instantiate counter module
+   
    monitor top(
-     .a (ab[1]),
-     .b (ab[0]),
-     .sel (sel),
-     .out (out)
-     );
+     .clk (clk),
+     .rst (rst),
+     .change (change),
+     .on_off (on_off),
+     .counter_out (counter_out)
+   );
+
 endmodule 
