@@ -105,7 +105,7 @@ reg [2:0] colour_out;
    LIGHTS top(
      .clk (clk),
      .rst (rst),
-     .button (change),
+     .button (button),
      .colour (colour)
    );
 
