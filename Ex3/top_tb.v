@@ -43,8 +43,28 @@ wire [7:0] counter_out;
         change=0;
         on_off=0;
 
+        #(CLK_PERIOD*20)
         counter_prev=counter_out;        
 
+        #CLK_PERIOD
+        rst=0; 
+        change=1;
+        forever begin
+        #CLK_PERIOD
+          if ((change==1)&&(on_off==1))
+          begin
+             counter_prev=counter_prev+1; //set the new counter_prev
+          end
+          else if ((change==1)&&(on_off==0))
+           begin
+              counter_prev=counter_prev-1; //set the new counter_prev
+           end
+          else
+          begin
+             counter_prev=counter_prev; //set the new counter_prev    
+          end
+        end      
+ 
      forever begin
         
         //check for on_off
@@ -64,13 +84,7 @@ wire [7:0] counter_out;
               $display("Test FAILED");//if not then test failed
               err = 1;
            end
-           counter_prev=counter_out; //set the new counter_prev
-        end
-        
-
-        on_off=~on_off;
-        change=~change;
-        rst=0;        //try both cases
+        end   
      end 
 
         //check for reset
@@ -82,6 +96,7 @@ wire [7:0] counter_out;
         end
         
         if ((rst==0)&&(counter_out!=counter_prev))
+        
         //rst=0 means counter_out=counter_prev
         begin
            $display("Test FAILED");//if not then test failed
@@ -95,13 +110,14 @@ wire [7:0] counter_out;
 	   $display("TEST FAILED");
 	   err = 1;
 	end
+            
    end  
   
 //Todo: Finish test, check for success
 
      initial
      begin
-        #500
+        #1000
         if (err==0)
           $display("TEST PASSED!");
         $finish;
