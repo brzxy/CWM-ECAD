@@ -49,24 +49,28 @@ wire [7:0] counter_out;
         
         //check for on_off
         #CLK_PERIOD
-        if ((on_off==1)&&(counter_out<counter_prev))
-        //on_off=1 means counter counts up, so counter_out should be larger than counter_prev 
+        if (change==1)
         begin
-           $display("TEST FAILED");//if not then test failed
-            err = 1;
+           if ((on_off==1)&&(counter_out<counter_prev))
+           //on_off=1 means counter counts up, so counter_out should be larger than counter_prev 
+           begin
+              $display("TEST FAILED");//if not then test failed
+              err = 1;
+           end
+        
+           if ((on_off==0)&&(counter_out>counter_prev))
+           //on_off=1 means counter counts up, so counter_out should be smaller than counter_prev 
+           begin
+              $display("Test FAILED");//if not then test failed
+              err = 1;
+           end
+           counter_prev=counter_out; //set the new counter_prev
         end
         
-        if ((on_off==0)&&(counter_out>counter_prev))
-        //on_off=1 means counter counts up, so counter_out should be smaller than counter_prev 
-        begin
-           $display("Test FAILED");//if not then test failed
-           err = 1;
-        end
-        counter_prev=counter_out; //set the new counter_prev
-        
-        on_off=on_off+1;
-        change=change+1;
-        rst=rst+1;        //try both cases
+
+        on_off=~on_off;
+        change=~change;
+        rst=0;        //try both cases
      end 
 
         //check for reset
@@ -83,13 +87,21 @@ wire [7:0] counter_out;
            $display("Test FAILED");//if not then test failed
            err = 1;
         end  
+   
+
+        // change is zero, check if the counter value stays the same 
+        if((change == 0) && (counter_out != counter_prev))
+        begin
+	   $display("TEST FAILED");
+	   err = 1;
+	end
    end  
   
 //Todo: Finish test, check for success
 
      initial
      begin
-        #50
+        #500
         if (err==0)
           $display("TEST PASSED!");
         $finish;
