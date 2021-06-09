@@ -45,7 +45,7 @@ reg [2:0] colour_out;
    initial 
    begin //This block drives inputs to user’s module and checks output
         err=0;         
-        rst=0;
+        rst=1;
 
         button=0;
 
@@ -69,6 +69,11 @@ reg [2:0] colour_out;
            err = 1;
         end
 
+        colour_out=colour_prev; //set the new colour_prev  
+        
+        button=~button; 
+        rst=0;
+     end
 
         //check for reset
         if ((rst==1)&&(colour_out!=3'b000))
@@ -83,18 +88,13 @@ reg [2:0] colour_out;
            $display("Test FAILED");//if not then test failed
            err = 1;
         end
-
-        colour_out=colour_prev; //set the new colour_prev  
-        button=button+1; 
-        rst=rst+1;
-     end   
    end  
   
 //Todo: Finish test, check for success
 
      initial
      begin
-        #50
+        #500
         if (err==0)
           $display("TEST PASSED!");
         $finish;
@@ -105,7 +105,6 @@ reg [2:0] colour_out;
    LIGHTS top(
      .clk (clk),
      .rst (rst),
-     .button (button),
      .colour (colour)
    );
 
