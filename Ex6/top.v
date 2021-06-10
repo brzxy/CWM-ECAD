@@ -14,7 +14,7 @@
 //           rgb [23:0]
 //
 //////////////////////////////////////////////////////////////////////////////////
-  `timescale 1ns / 100ps
+`timescale 1ns / 100ps
 
 module converter(
 
@@ -26,7 +26,7 @@ output [23:0] rgb
 
 
 
-  blk_mem_gen_0 rgb_mem (
+  blk_mem_gen_2 rgb_mem (
   .clka(clk),    // input wire clka
   .ena(enable),      // input wire ena
   .wea(1'b0),      // input wire [0 : 0] wea
