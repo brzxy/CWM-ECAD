@@ -29,7 +29,7 @@ reg rst;
 reg button;
 reg err;
 reg [2:0] colour_prev;
-reg [2:0] colour_out;
+wire [2:0] colour;
 
 //Todo: Clock generation
 
@@ -48,48 +48,50 @@ reg [2:0] colour_out;
         rst=1;
 
         button=0;
+        colour_prev=colour;
 
-        colour_prev=colour_out;        
+           
+        //check for reset
+        if ((rst==1)&&(colour!=3'b000))
+        //rst=1 means colour={000}
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end
+        if ((rst==0)&&(colour!=colour_prev))
+        //rst=0 means colour=colour_prev
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end        
 
      forever begin
         
         //check for on_off
         #CLK_PERIOD
-        if ((button==1)&&(colour_out<colour_prev))
+        if ( (button == 1) && (colour < colour_prev) )
         //button=1 means the colour number will increase by one 
         begin
            $display("TEST FAILED");//if not then test failed
             err = 1;
         end
         
-        if ((button==0)&&(colour_out!=colour_prev))
+        if ((button==0)&&(colour!=colour_prev))
         //button=0 means the colour number will stay constant 
         begin
            $display("Test FAILED");//if not then test failed
            err = 1;
         end
 
-        colour_out=colour_prev; //set the new colour_prev  
-        
+        #CLK_PERIOD
         button=~button; 
+        colour_prev=colour; //set the new colour_prev  
+       
         rst=0;
      end
-
-        //check for reset
-        if ((rst==1)&&(colour_out!=3'b000))
-        //rst=1 means colour_out={000}
-        begin
-           $display("Test FAILED");//if not then test failed
-           err = 1;
-        end
-        if ((rst==0)&&(colour_out!=colour_prev))
-        //rst=0 means colour_out=colour_prev
-        begin
-           $display("Test FAILED");//if not then test failed
-           err = 1;
-        end
    end  
   
+
 //Todo: Finish test, check for success
 
      initial

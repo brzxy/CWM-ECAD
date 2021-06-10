@@ -33,15 +33,36 @@ module LIGHTS (
     always @(posedge clk)
      begin
 
-        if(rst)
-          colour = 3'd000;  //if reset then colour={000}
-        else  
+        if (rst)
+          colour = #1 3'd000;  //if reset then colour={000}
+        if (button ==0)
+                colour<=colour;
+        else if (button) 
           begin
-            
-             if ((colour==3'd000)||(colour==3'd111))//if colour is {000} or {111}, change to {001}
-                colour=3'd001;               
-             if (button)   //if button=1
-                colour=colour+3'd001;
+
+             if ((colour==3'd000))//if colour is {000} or {111}, change to {001}
+                colour<= #1 3'd001; 
+             if ((colour==3'd111))//if colour is {000} or {111}, change to {001}
+                colour<= #1 3'd001;    
+
+           
+             if ((colour==3'd001))
+                colour<= #1 3'd010;
+
+             if ((colour==3'd010))
+                colour<= #1 3'd011;
+
+             if ((colour==3'd011))
+                colour<= #1 3'd100;
+
+             if ((colour==3'd100))
+                colour<= #1 3'd101;
+
+             if ((colour==3'd101))
+                colour<= #1 3'd110;
+
+             if ((colour==3'd110))
+                colour<= #1 3'd001;
 
           end
      end
