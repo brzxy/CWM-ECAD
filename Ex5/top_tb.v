@@ -33,92 +33,103 @@ wire heating;
 
    initial 
    begin //This block drives inputs to user’s module and checks output
-        err=0;         
+        err=0;
+        #(CLK_PERIOD) 
         temperature=18;//set the initial temperature to be 18   
 
       forever
       begin  
-        #(3*CLK_PERIOD)
+        #(CLK_PERIOD)
         //check for HEATING ON state
-        if ((temperature<=18)&&((cooling==1)||(heating==0)))
+        if ((temperature<=20)&&((cooling==1)||(heating==0)))
         //heater should be on
         begin
-           $display("TEST FAILED");//if not then test failed
+           $display("TEST FAILED1");//if not then test failed
             err = 1;
         end
         
 
         #(CLK_PERIOD)
         temperature=19;
+        #(CLK_PERIOD)
         //check for remainning HEATING state
-        if ((temperature>=20)&&((cooling==1)||(heating==0)))
+        if ((temperature>=20)&&(cooling == 0) && ((cooling == 1) || (heating == 0)))
         //for temperature being 19 the heating should on
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED2");//if not then test failed
            err = 1;
         end
 
 
         #(CLK_PERIOD)
         temperature=20;
+        #(CLK_PERIOD)
         //check for IDLE state
         if ((temperature>=20)&&((cooling==1)||(heating==1)))
         //for temperature being 20 should IDLE
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED3");//if not then test failed
            err = 1;
         end
 
         #(CLK_PERIOD)
         temperature=21;
+        #(CLK_PERIOD)
         //check for remaining IDLE state
         if ((temperature<22)&&((cooling==1)||(heating==1)))
         //for temperature being 21 should IDLE
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED4");//if not then test failed
            err = 1;
         end
 
         #(CLK_PERIOD)
         temperature=22;
+        #(CLK_PERIOD)
         //check for COOLING state
         if ((temperature>=22)&&((cooling==0)||(heating==1)))
         //for temperature being 22 should COOLING
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED5");//if not then test failed
            err = 1;
+        end
 
         #(CLK_PERIOD)
         temperature=21;
+        #(CLK_PERIOD)
         //check for remain cooling state
         if ((temperature>20)&&((cooling==0)||(heating==1)))
         //for temperature being 21 should Cooling
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED6");//if not then test failed
            err = 1;
         end
 
         #(CLK_PERIOD)
         temperature=20;
+        #(CLK_PERIOD)
         //check for IDLE state
         if ((temperature<=20)&&((cooling==1)||(heating==1)))
         //for temperature being 20 should IDLE
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED7");//if not then test failed
            err = 1;
         end
 
         #(CLK_PERIOD)
         temperature=19;
+        #(CLK_PERIOD)
         //check for remain IDLE state
         if ((temperature>18)&&((cooling==1)||(heating==1)))
         //for temperature being 19 should IDLE
         begin
            $display("Test FAILED");//if not then test failed
            err = 1;
+        end
 
         #(CLK_PERIOD)
         temperature=18;
+        #(CLK_PERIOD)
         //check for HEATING state
         if ((temperature<=18)&&((cooling==1)||(heating==0)))
         //for temperature being 18 should HEATING

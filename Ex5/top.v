@@ -27,10 +27,30 @@ module AIR (
     reg cooling;
 
     //add user logic
-    //{000} and {111} are not used, for other colours, change if button=1, stay constant if button=0
+
+     initial begin
+	heating = 0;
+	cooling = 0;
+     end
+
      always @(posedge clk)
      begin
         
+        //for the state to be HEATER ON
+        if((heating==1)&&(cooling==0))
+        begin
+            if(temperature>=20)
+            begin 
+               cooling<=0; 
+               heating<=0;     //turn off cooling and turn off heating
+            end
+            else
+            begin 
+               cooling<=0; 
+               heating<=1;     //turn off cooling and turn on heating
+            end
+        end
+
 
         //for the state to be COOLING ON
         if((heating==0)&&(cooling==1))
@@ -48,21 +68,7 @@ module AIR (
         end
 
 
-        //for the state to be HEATER ON
-        if((heating==1)&&(cooling==0))
-        begin
-            if(temperature>=20)
-            begin 
-               cooling<=0; 
-               heating<=0;     //turn off cooling and turn off heating
-            end
-            else
-            begin 
-               cooling<=0; 
-               heating<=1;     //turn off cooling and turn on heating
-            end
-        end
-
+        
 
         //for the state to be IDLE
         if((heating==0)&&(cooling==0))
@@ -84,6 +90,13 @@ module AIR (
                heating<=0;     //turn off cooling and turn off heating
             end
         end
+        
+        else
+        begin
+		//DISALLOWED STATE; switching to idle	      
+		heating <= 0;
+		cooling <= 0;		
+	end
  
     end
 
