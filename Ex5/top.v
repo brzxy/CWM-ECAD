@@ -28,7 +28,7 @@ module AIR (
 
     //add user logic
     //{000} and {111} are not used, for other colours, change if button=1, stay constant if button=0
-    always @(posedge clk)
+     always @(posedge clk)
      begin
         
 
