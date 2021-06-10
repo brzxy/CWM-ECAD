@@ -43,51 +43,54 @@ wire [2:0] colour;
 //Todo: User logic
 
    initial 
-   begin //This block drives inputs to user’s module and checks output
-        err=0;         
+   begin //This block drives inputs to user’s module and checks output           
         rst=1;
+        err=0;  
+        button=0;    
 
-        button=0;
-        colour_prev=colour;
-
-           
+   forever begin      
         //check for reset
+        #(CLK_PERIOD)
         if ((rst==1)&&(colour!=3'b000))
         //rst=1 means colour={000}
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED1");//if not then test failed
            err = 1;
         end
-        if ((rst==0)&&(colour!=colour_prev))
-        //rst=0 means colour=colour_prev
+      
+        #(CLK_PERIOD)
+        rst=0;
+        colour_prev=colour;
+        #(CLK_PERIOD)
+
+        if ((button==0)&&(colour_prev!=colour))
+        //button=0 colour=colour
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED2");//if not then test failed
            err = 1;
         end        
 
-     forever begin
+    
         
-        //check for on_off
+        //check for increment
         #CLK_PERIOD
-        if ( (button == 1) && (colour < colour_prev) )
+        button=1;
+        colour_prev=colour;
+        #CLK_PERIOD
+        if ( (button == 1) && (colour_prev == 3'b110) && (colour != colour_prev + 1) )
         //button=1 means the colour number will increase by one 
         begin
-           $display("TEST FAILED");//if not then test failed
+           $display("TEST FAILED3");//if not then test failed
             err = 1;
         end
         
-        if ((button==0)&&(colour!=colour_prev))
-        //button=0 means the colour number will stay constant 
+        if ((button==1)&&(colour_prev == 3'b110)&&(colour!=3'b001))
+        //change from 6 to 1 
         begin
-           $display("Test FAILED");//if not then test failed
+           $display("Test FAILED4");//if not then test failed
            err = 1;
         end
 
-        #CLK_PERIOD
-        button=~button; 
-        colour_prev=colour; //set the new colour_prev  
-       
-        rst=0;
      end
    end  
   
@@ -96,7 +99,7 @@ wire [2:0] colour;
 
      initial
      begin
-        #500
+        #200
         if (err==0)
           $display("TEST PASSED!");
         $finish;
@@ -107,6 +110,7 @@ wire [2:0] colour;
    LIGHTS top(
      .clk (clk),
      .rst (rst),
+     .button(button),
      .colour (colour)
    );
 

@@ -33,38 +33,41 @@ module LIGHTS (
     always @(posedge clk)
      begin
 
-        if (rst)
-          colour = #1 3'd000;  //if reset then colour={000}
+      if (rst)
+          colour <= #1 3'b000;  //if reset then colour={000}
+      else
+      begin  
         if (button ==0)
                 colour<=colour;
-        else if (button) 
+        else  
           begin
 
-             if ((colour==3'd000))//if colour is {000} or {111}, change to {001}
-                colour<= #1 3'd001; 
-             if ((colour==3'd111))//if colour is {000} or {111}, change to {001}
-                colour<= #1 3'd001;    
+             if ((colour==3'b000))//if colour is {000} or {111}, change to {001}
+                colour<= #1 3'b001; 
+             if ((colour==3'b111))//if colour is {000} or {111}, change to {001}
+                colour<= #1 3'b001;    
 
            
-             if ((colour==3'd001))
-                colour<= #1 3'd010;
+             if ((colour==3'b001))
+                colour<= #1 3'b010;
 
-             if ((colour==3'd010))
-                colour<= #1 3'd011;
+             if ((colour==3'b010))
+                colour<= #1 3'b011;
 
-             if ((colour==3'd011))
-                colour<= #1 3'd100;
+             if ((colour==3'b011))
+                colour<= #1 3'b100;
 
-             if ((colour==3'd100))
-                colour<= #1 3'd101;
+             if ((colour==3'b100))
+                colour<= #1 3'b101;
 
-             if ((colour==3'd101))
-                colour<= #1 3'd110;
+             if ((colour==3'b101))
+                colour<= #1 3'b110;
 
-             if ((colour==3'd110))
-                colour<= #1 3'd001;
+             if ((colour==3'b110))
+                colour<= #1 3'b001;
 
           end
+       end
      end
 
 endmodule
