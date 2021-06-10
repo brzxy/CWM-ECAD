@@ -41,7 +41,7 @@ wire heating;
       begin  
         #(CLK_PERIOD)
         //check for HEATING ON state
-        if ((temperature<=20)&&((cooling==1)||(heating==0)))
+        if ((temperature>=20)&&((cooling==1)||(heating==0)))
         //heater should be on
         begin
            $display("TEST FAILED1");//if not then test failed

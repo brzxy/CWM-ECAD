@@ -33,71 +33,67 @@ module AIR (
 	cooling = 0;
      end
 
-     always @(posedge clk)
-     begin
+     always@(posedge clk)
+	begin
+		
+		// For heating state
+		if ((heating == 1) && (cooling == 0))
+		begin
+			
+			if (temperature < 20)// stay in heating state
+			begin
+			heating <= 1;
+			cooling <= 0;
+			end
+			
+			if (temperature >= 20)// switch to idle
+			begin
+			heating <= 0;
+			cooling <= 0;
+			end
+		end
+
+		//For cooling state
+		else if ((heating == 0) && (cooling == 1))
+		begin
+			
+			if (temperature > 20)// stay in cooling state
+			begin
+			heating <= 0;
+			cooling <= 1;
+			end
+			
+			if (temperature <= 20)// switch to idle
+			begin
+			heating <= 0;
+			cooling <= 0;
+			end
+		end
         
-        //for the state to be HEATER ON
-        if((heating==1)&&(cooling==0))
-        begin
-            if(temperature>=20)
-            begin 
-               cooling<=0; 
-               heating<=0;     //turn off cooling and turn off heating
-            end
-            else
-            begin 
-               cooling<=0; 
-               heating<=1;     //turn off cooling and turn on heating
-            end
-        end
+                // For idle state
+		else if ((heating == 0) && (cooling == 0))
+		begin
+			// stay in idle 
+			if ((temperature > 18) && (temperature < 22))
+			begin
+			heating <= 0;
+			cooling <= 0;
+			end
+			
+			else if (temperature <= 18)// heating on
+			begin
+			heating <= 1;
+			cooling <= 0;
+			end
+			
+			else if (temperature >= 22)// cooling on
+			begin
+			heating <= 0;
+			cooling <= 1;
+			end
+		end
 
-
-        //for the state to be COOLING ON
-        if((heating==0)&&(cooling==1))
-        begin
-            if(temperature<=20)
-            begin 
-               cooling<=0; 
-               heating<=0;     //turn off cooling and turn off heating
-            end
-            else
-            begin 
-               cooling<=1; 
-               heating<=0;     //turn on cooling and turn off heating
-            end
-        end
-
-
-        
-
-        //for the state to be IDLE
-        if((heating==0)&&(cooling==0))
-        begin
-            if(temperature>=22)
-            begin 
-               cooling<=1; 
-               heating<=0;     //turn on cooling and turn off heating
-            end
-
-            if(temperature<=18)
-            begin 
-               cooling<=0;
-               heating<=1;     //turn off cooling and turn on heating
-            end
-            
-            else begin
-               cooling<=0;
-               heating<=0;     //turn off cooling and turn off heating
-            end
-        end
-        
-        else
-        begin
-		//DISALLOWED STATE; switching to idle	      
-		heating <= 0;
-		cooling <= 0;		
+		
 	end
- 
-    end
 
 endmodule
