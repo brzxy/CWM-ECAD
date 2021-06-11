@@ -31,17 +31,17 @@ wire heating;
    begin //This block generates the clock with a period of 10 time units
       clk=0;
       forever
-        #(CLK_PERIOD/2) clk=~clk; //happens every delay of CLK_PERIOD/2
+        #(CLK_PERIOD/2) clk_p=~clk_p; //happens every delay of CLK_PERIOD/2
    end
-
+   
 //Todo: User logic
-
+   assign clk_n=~clk_p;
    initial 
    begin //This block drives inputs to user’s module and checks output
         err=0;
         clk_p=0;
         #(CLK_PERIOD) 
-        assign clk_n=~clk_p;
+        
         temperature=18;//set the initial temperature to be 18   
 
       forever
