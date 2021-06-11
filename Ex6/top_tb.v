@@ -34,15 +34,17 @@ wire [23:0] rgb;
    initial 
    begin //This block drives inputs to user’s module and checks output
         err=0;
+        enable=0;
         colour=3'b0;
-        enable=0;   
+           
         #(CLK_PERIOD)
         enable=1; 
       forever
       begin  
        
         #(CLK_PERIOD*2)
-        if ((colour[0]!=(rgb[7:0]))||(colour[1]!=(rgb[15:8]))||(colour[2]!=(&rgb[23:16]))) 
+
+        if ((colour[0]!=(&rgb[7:0]))||(colour[1]!=(&rgb[15:8]))||(colour[2]!=(&rgb[23:16]))) 
         //the first bit in colour is converted to first 8 bits in rgb
         //the second bit in colour is converted to second 8 bits in rgb
         //the third bit in colour is converted to third 8 bits in rgb
@@ -50,7 +52,7 @@ wire [23:0] rgb;
            $display("Test FAILED");//if not then test failed
            err = 1;
         end
-        colour=colour+3'd1;
+        colour=colour+3'd1;//try different colour in next cycle
       end
    end  
   
