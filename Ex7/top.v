@@ -21,7 +21,7 @@ module LightsSelector(
         input sel,
         input rst,
         input button,
-	input enable,
+	input enable=1,
         output [23:0] light
         ); 
 
@@ -41,7 +41,7 @@ LIGHTS LIGHTS (
 
 converter converter ( 
     .clk(clk),
-    .enable(1),  
+    .enable(enable),  
     .colour(colour), 
     .rgb(rgb)      
     );
