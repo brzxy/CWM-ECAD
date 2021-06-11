@@ -46,7 +46,7 @@ module top(
       );
 
 //Add logic here
-       AIR(
+       AIR AIR(
 	.clk(clk),
 	.temperature(temperature),
 	.heating(heating),
