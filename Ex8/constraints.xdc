@@ -45,7 +45,6 @@ set_property PULLUP true [get_ports rst_n]
 
 #####set clock##
 create_clock -name clk -period 10 [get_ports {clk_p}]
-create_clock -name clk -period 10 [get_ports {clk_n}]
-set_clock_groups –asynchronous –group {clk1} –group {clk2}
 
+set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks]
 
