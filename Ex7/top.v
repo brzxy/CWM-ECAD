@@ -26,7 +26,7 @@ module LightsSelector(
         ); 
 
 	//define white
-	reg [23:0] white = 24'hffffff;//from mem.coe
+	reg [23:0] white = 24'hFFFFFF;//from mem.coe
 	//wires
 	wire [2:0] colour;
 	wire [23:0] rgb;

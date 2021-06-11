@@ -20,7 +20,7 @@ module top_tb(
         reg sel;
         reg button;
         reg rst;
-	
+	reg enable;
 	wire [23:0] light;
 	reg [23:0] light_prev;
 
@@ -40,11 +40,13 @@ module top_tb(
 		err=0;
 		rst=0;
 		button=0;
+                enable=1;
 		//button=0 means colours can change 
 		light_prev=light;
 		sel = 0;
+                #10
 		#(CLK_PERIOD)
-		if (light != 24'hffffff) 
+		if (light != 24'hFFFFFF) 
                 begin
 		   $display("TEST FAILED 1");
 	       	   err = 1;
@@ -53,7 +55,7 @@ module top_tb(
 
 		#(CLK_PERIOD)
 
-		if (light != 24'hffffff) 
+		if (light != 24'hFFFFFF) 
                 begin
 		   $display("TEST FAILED 2");
 		   err = 1;
@@ -106,9 +108,10 @@ module top_tb(
 	//instantiation
 	LightsSelector top (
 		.clk(clk),
-		.rst(rst),
 		.sel(sel),
+                .rst(rst),
 		.button(button),
+                .enable(enable),
 		.light(light)
 		);
 
