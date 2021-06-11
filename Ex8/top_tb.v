@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Test bench for Exercise #8  - Simple End-to-End Design
-// Student Name:
-// Date: 
+// Student Name:Xuyang Zhao
+// Date: 2021/6/11
 //
 // Description: A testbench module to test Ex8
 // You need to write the whole file
