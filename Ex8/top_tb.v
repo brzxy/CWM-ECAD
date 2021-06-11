@@ -14,12 +14,12 @@ module top_tb(
 // Parameters
 parameter CLK_PERIOD = 10; //set the clock period
 //Todo: Regitsers and wires
-reg clk_n;
 reg clk_p;
+wire clk_n;
+reg rst_n;
 reg err;
 reg button;
 reg sel;
-reg rst;
 reg [4:0] temperature;
 
 wire cooling;
@@ -39,6 +39,7 @@ wire heating;
    initial 
    begin //This block drives inputs to user’s module and checks output
         err=0;
+        clk_p=0;
         #(CLK_PERIOD) 
         assign clk_n=~clk_p;
         temperature=18;//set the initial temperature to be 18   
@@ -159,15 +160,16 @@ wire heating;
 //Todo: Instantiate module
    
    top top_0(
-     .clk_n (clk),
-     .clk_p (clk),
-     .rst (rst_n),
-     .temperature (temperature),
+     .clk_p (clk_p),
+     .clk_n (clk_n),
+     .rst_n (rst_n),
+     .temperature_0 (temperature[0]),
+     .temperature_1 (temperature[1]),
+     .temperature_2 (temperature[2]),
+     .temperature_3 (temperature[3]),
+     .temperature_4 (temperature[4]),
      .heating (heating),
      .cooling (cooling),
-     .button(button),
-     .sel(sel),
-     .light(light)
    );
 
 
