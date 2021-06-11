@@ -27,6 +27,8 @@ module top_tb(
 	//creating the clock
 	initial begin
         clk = 1'b0;
+        light_prev=24'd0;        
+
         forever
          #(CLK_PERIOD/2) clk=~clk;
         end
