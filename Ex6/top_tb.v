@@ -44,14 +44,27 @@ wire [23:0] rgb;
        
         #(CLK_PERIOD*2)
 
-        if ((colour[0]!=(&rgb[7:0]))||(colour[1]!=(&rgb[15:8]))||(colour[2]!=(&rgb[23:16]))) 
+        if (colour[0]!=(&rgb[7:0]))
         //the first bit in colour is converted to first 8 bits in rgb
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end
+
+        if (colour[1]!=(&rgb[15:8]))
         //the second bit in colour is converted to second 8 bits in rgb
+        begin
+           $display("Test FAILED");//if not then test failed
+           err = 1;
+        end
+
+        if (colour[2]!=(&rgb[23:16]))
         //the third bit in colour is converted to third 8 bits in rgb
         begin
            $display("Test FAILED");//if not then test failed
            err = 1;
         end
+
         colour=colour+3'd1;//try different colour in next cycle
       end
    end  
